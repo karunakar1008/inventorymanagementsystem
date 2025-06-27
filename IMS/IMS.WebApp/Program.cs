@@ -1,3 +1,7 @@
+using IMS.Plugins.InMemory;
+using IMS.UseCases.Inventories;
+using IMS.UseCases.Inventories.Interfaces;
+using IMS.UseCases.PluginInterfaces;
 using IMS.WebApp.Components;
 
 namespace IMS.WebApp
@@ -10,6 +14,10 @@ namespace IMS.WebApp
 
             // Add services to the container.
             builder.Services.AddRazorComponents();
+
+            builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>();
+
+            builder.Services.AddTransient<IViewInventoriesByNameUseCase, ViewInventoriesByNameUseCase>();
 
             var app = builder.Build();
 

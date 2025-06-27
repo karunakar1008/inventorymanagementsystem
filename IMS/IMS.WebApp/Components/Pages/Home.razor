@@ -1,7 +1,48 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+@inject IViewInventoriesByNameUseCase ViewInventoriesByNameUseCase
 
-<h1>Hello, world!</h1>
+<PageTitle>Inventories</PageTitle>
 
-Welcome to your new app.
+@if (inventories != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th></th>
+                <th style="text-align:left"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (inventories is not null && inventories.Count > 0)
+            {
+                foreach (var Inventory in inventories)
+                {
+                    <tr>
+                        <td>@Inventory.InventoryName</td>
+                        <td>@Inventory.Quantity</td>
+                        <td>@Inventory.Price.ToString("c")</td>
+                        <td>
+                            <a class="btn btn-light"
+                               href="/editinventory/@Inventory.InventoryId">
+                                Edit
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Inventory>? inventories;
+
+    protected override async Task OnInitializedAsync()
+    {
+        inventories = (await ViewInventoriesByNameUseCase.ExecuteAsync("")).ToList();
+    }
+}
