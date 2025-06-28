@@ -15,6 +15,18 @@ namespace IMS.Plugins.InMemory
                 new Product { ProductId = 2, ProductName = "Car", Quantity = 10, Price = 25000 },
             };
         }
+
+        public Task DeleteProductsByIdAsync(int productId)
+        {
+            var product = _products.FirstOrDefault(x => x.ProductId == productId);
+            if (product != null)
+            {
+                _products.Remove(product);
+            }
+
+            return Task.CompletedTask;
+        }
+
         public async Task<IEnumerable<Product>> GetProductsByNameAsync(string name)
         {
             if (string.IsNullOrEmpty(name)) return await Task.FromResult(_products);

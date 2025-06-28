@@ -26,6 +26,7 @@ namespace IMS.WebApp
             builder.Services.AddTransient<IViewInventoryByIdUseCase, ViewInventoryByIdUseCase>();
             builder.Services.AddTransient<IDeleteInventoryUseCase, DeleteInventoryUseCase>();
             builder.Services.AddTransient<IViewProductsByNameUseCase, ViewProductsByNameUseCase>();
+            builder.Services.AddTransient<IDeleteProductUseCase, DeleteProductUseCase>();
 
 
             var app = builder.Build();

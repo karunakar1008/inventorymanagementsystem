@@ -6,7 +6,7 @@
             <th>Name</th>
             <th>Quantity</th>
             <th>Price</th>
-            <th>Actions</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -14,7 +14,7 @@
         {
             foreach (var inventory in products)
             {
-                <ProductListItemComponent Product="inventory" @key="@inventory.ProductId"></ProductListItemComponent>
+                <ProductListItemComponent Product="inventory" @key="@inventory.ProductId" @rendermode="InteractiveServer"></ProductListItemComponent>
             }
         }
     </tbody>
@@ -30,6 +30,5 @@
     {
         products = (await ViewProductsByNameUseCase.ExecuteAsync(ProductNameToSearch??string.Empty)).ToList();
     }
-
    
 }

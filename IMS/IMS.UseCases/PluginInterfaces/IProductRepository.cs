@@ -4,6 +4,7 @@ namespace IMS.UseCases.PluginInterfaces
 {
     public interface IProductRepository
     {
+        Task DeleteProductsByIdAsync(int productId);
         Task<IEnumerable<Product>> GetProductsByNameAsync(string name);
     }
 }

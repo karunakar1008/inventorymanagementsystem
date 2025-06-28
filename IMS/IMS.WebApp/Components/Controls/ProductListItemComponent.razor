@@ -1,4 +1,5 @@
 ﻿@inject NavigationManager NavigationManager
+@inject IDeleteProductUseCase DeleteProductUseCase
 
 @if (Product is not null)
 {
@@ -10,6 +11,7 @@
             <a class="btn btn-light" href="/editproduct/@Product.ProductId">
                 Edit
             </a>
+            <button type="button" class="btn btn-light" @onclick="async ()=>{ await HandleDelete(Product.ProductId);}">Delete</button>
         </td>
     </tr>
 }
@@ -18,4 +20,10 @@
 
     [Parameter]
     public Product? Product { get; set; }
+
+    private async Task HandleDelete(int productId)
+    {
+        await DeleteProductUseCase.ExecuteAsync(productId);
+        Product = null;
+    }
 }
