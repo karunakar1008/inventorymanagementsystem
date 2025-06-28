@@ -2,13 +2,13 @@
 
 namespace IMS.CoreBusiness
 {
-    public class Inventory
+    public class Product
     {
-        public int InventoryId { get; set; }
+        public int ProductId { get; set; }
 
         [Required]
         [StringLength(150)]
-        public string InventoryName { get; set; } = string.Empty;
+        public string ProductName { get; set; } = string.Empty;
 
         [Range(0, int.MaxValue, ErrorMessage = "Quantity must be greator or equal to 0.")]
         public int Quantity { get; set; }
