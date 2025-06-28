@@ -20,7 +20,30 @@ namespace IMS.Plugins.InMemory
 
         public Task AddInventoryAsync(Inventory inventory)
         {
-            throw new NotImplementedException();
+            if (_inventories.Any(x => x.InventoryName.Equals(inventory.InventoryName, StringComparison.OrdinalIgnoreCase)))
+            { return Task.CompletedTask; }
+
+            var maxId = _inventories.Max(x => x.InventoryId);
+            inventory.InventoryId = maxId + 1;
+
+            _inventories.Add(inventory);
+
+            return Task.CompletedTask;
+        }
+
+        public Task DeleteInventoriesByIdAsync(int inventoryId)
+        {
+            var inventory = _inventories.FirstOrDefault(x => x.InventoryId == inventoryId);
+            if (inventory != null)
+            {
+                _inventories.Remove(inventory);
+            }
+            return Task.CompletedTask;
+        }
+
+        public async Task<Inventory> GetInventoriesByIdAsync(int inventoryId)
+        {
+            return await Task.FromResult(_inventories.First(x => x.InventoryId == inventoryId));
         }
 
         public async Task<IEnumerable<Inventory>> GetInventoriesByNameAsync(string name)
@@ -29,5 +52,23 @@ namespace IMS.Plugins.InMemory
 
             return _inventories.Where(x => x.InventoryName.Contains(name, StringComparison.OrdinalIgnoreCase));
         }
+
+        public Task UpdateInventoryAsync(Inventory inventory)
+        {
+            if (_inventories.Any(x => x.InventoryId != inventory.InventoryId &&
+                x.InventoryName.Equals(inventory.InventoryName, StringComparison.OrdinalIgnoreCase)))
+                return Task.CompletedTask;
+
+            var invToUpdate = _inventories.FirstOrDefault(x => x.InventoryId == inventory.InventoryId);
+            if (invToUpdate is not null)
+            {
+                invToUpdate.InventoryName = inventory.InventoryName;
+                invToUpdate.Quantity = inventory.Quantity;
+                invToUpdate.Price = inventory.Price;
+            }
+
+            return Task.CompletedTask;
+        }
+
     }
 }
