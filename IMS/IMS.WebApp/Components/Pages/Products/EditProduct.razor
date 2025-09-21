@@ -6,7 +6,8 @@
 @inject IViewProductByIdUseCase ViewProductByIdUseCase
 
 <h3>Edit Product</h3>
-<br/>
+<br />
+
 @if (this.product is not null)
 {
     <EditForm Model="product" OnValidSubmit="Update">
@@ -41,6 +42,10 @@
             </InputNumber>
             <ValidationMessage For="() => product.Price"></ValidationMessage>
         </div>
+        <div class="form-group">
+            <label for="price">Inventories</label>
+            <ProductInventories Product="product"></ProductInventories>
+        </div>
         <br />
         <button type="submit" class="btn btn-primary">Update</button>
         &nbsp;
@@ -49,11 +54,12 @@
 }
 
 @code {
+    private Product? product { get; set; }
+
 
     [Parameter]
     public int InvId { get; set; }
 
-    private Product? product { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -62,10 +68,11 @@
             var inv = await ViewProductByIdUseCase.ExecuteAsync(this.InvId);
             product = new Product
             {
-                    ProductId = inv.ProductId,
-                    ProductName = inv.ProductName,
-                    Price = inv.Price,
-                    Quantity = inv.Quantity
+                ProductId = inv.ProductId,
+                ProductName = inv.ProductName,
+                Price = inv.Price,
+                Quantity = inv.Quantity,
+                ProductInventories=inv.ProductInventories
             };
         }
     }
@@ -74,16 +81,17 @@
     {
         if (product is not null)
         {
-            var inv = new Product
+            var productToBeUpdated = new Product
             {
-                    ProductId = product.ProductId,
-                    ProductName = product.ProductName,
-                    Price = product.Price,
-                    Quantity = product.Quantity
+                ProductId = product.ProductId,
+                ProductName = product.ProductName,
+                Price = product.Price,
+                Quantity = product.Quantity,
+                ProductInventories=product.ProductInventories
             };
 
-            await EditProductUseCase.ExecuteAsync(inv);
+            await EditProductUseCase.ExecuteAsync(productToBeUpdated);
             NavigationManager.NavigateTo("/products");
-        }        
+        }
     }
 }

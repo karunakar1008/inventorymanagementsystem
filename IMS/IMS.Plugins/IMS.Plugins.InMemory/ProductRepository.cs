@@ -22,8 +22,16 @@ namespace IMS.Plugins.InMemory
             { 
                 return Task.CompletedTask; 
             }
-            var maxId = _products.Max(x => x.ProductId);
-            product.ProductId = maxId + 1;
+
+            if (_products.Count > 0)
+            {
+                var maxId = _products.Max(x => x.ProductId);
+                product.ProductId = maxId + 1;
+            }
+            else
+            {
+                product.ProductId = 1;
+            }
 
             _products.Add(product);
 
@@ -51,6 +59,30 @@ namespace IMS.Plugins.InMemory
                 newProd.ProductName = prod.ProductName;
                 newProd.Price = prod.Price;
                 newProd.Quantity = prod.Quantity;
+                newProd.ProductInventories = new List<ProductInventory>();
+                if (prod.ProductInventories != null && prod.ProductInventories.Count > 0)
+                {
+                    foreach (var prodInv in prod.ProductInventories)
+                    {
+                        var newProdInv = new ProductInventory
+                        {
+                            InventoryId = prodInv.InventoryId,
+                            ProductId = prodInv.ProductId,
+                            Product = prod,
+                            Inventory = new Inventory(),
+                            InventoryQuantity = prodInv.InventoryQuantity
+                        };
+                        if (prodInv.Inventory != null)
+                        {
+                            newProdInv.Inventory.InventoryId = prodInv.Inventory.InventoryId;
+                            newProdInv.Inventory.InventoryName = prodInv.Inventory.InventoryName;
+                            newProdInv.Inventory.Price = prodInv.Inventory.Price;
+                            newProdInv.Inventory.Quantity = prodInv.Inventory.Quantity;
+                        }
+
+                        newProd.ProductInventories.Add(newProdInv);
+                    }
+                }
             }
 
             return await Task.FromResult(newProd);
@@ -76,6 +108,7 @@ namespace IMS.Plugins.InMemory
                 prod.ProductName = product.ProductName;
                 prod.Quantity = product.Quantity;
                 prod.Price = product.Price;
+                prod.ProductInventories = product.ProductInventories;
             }
 
             return Task.CompletedTask;

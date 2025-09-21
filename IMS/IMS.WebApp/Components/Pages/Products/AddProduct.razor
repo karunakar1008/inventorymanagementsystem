@@ -38,6 +38,11 @@
         </InputNumber>
         <ValidationMessage For="() => product.Price"></ValidationMessage>
     </div>
+
+    <div class="form-group">
+        <label for="price">Inventories</label>
+        <ProductInventories Product="product"></ProductInventories>
+    </div>
     <br/>
     <button type="submit" class="btn btn-primary">Save</button>
     &nbsp;
@@ -62,5 +67,7 @@
 
         NavigationManager.NavigateTo("/products");
     }
+
+   
 
 }
