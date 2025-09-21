@@ -1,0 +1,57 @@
+﻿@inject IViewInventoriesByNameUseCase ViewInventoriesByNameUseCase
+
+<div class="input-group">
+    <input class="form-control"
+           placeholder="Type something to search"
+           @bind-value="@searchFilter" @bind-value:event="oninput">
+    </input>
+    <button type="button" class="btn-success input-group-text" @onclick="HandleSearch">Search</button>
+</div>
+
+@if (inventories is not null && inventories.Count > 0)
+{
+    <div class="search-result">
+        <ul>
+            @foreach (var inv in inventories)
+            {
+                <li @key="inv.InventoryId"
+                    @onclick="async () => { await HandleSelectInventory(inv); }">
+                    @inv.InventoryName
+                </li>
+            }
+        </ul>
+    </div>
+}
+
+@code {
+    private string _searchFilter;
+
+    private string searchFilter
+    {
+        get => _searchFilter;
+        set
+        {
+            _searchFilter = value;
+            HandleSearch();
+        }
+    }
+
+    private List<Inventory> inventories = new List<Inventory>();
+
+    [Parameter]
+    public EventCallback<Inventory> OnInventorySelected { get; set; }
+
+    private async Task HandleSearch()
+    {
+        await Task.Delay(2000); // similate a relative long runing database call and this case we have to StateHasChanged() method
+        inventories = (await ViewInventoriesByNameUseCase.ExecuteAsync(this.searchFilter)).ToList(); //Even though the databse call take longer time, still UI has to be reflected.
+        StateHasChanged(); //Why are we using this though it's button click handler
+    }
+
+    private async Task HandleSelectInventory(Inventory inventory)
+    {
+        await OnInventorySelected.InvokeAsync(inventory);
+        inventories.Clear();
+    }
+
+}
