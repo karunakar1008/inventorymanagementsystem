@@ -1,4 +1,5 @@
 ﻿@page "/editinventory/{invId:int}"
+@using IMS.WebApp.ViewModels
 
 
 @inject NavigationManager NavigationManager
@@ -54,14 +55,14 @@
     public int InvId { get; set; }
 
     [SupplyParameterFromForm]
-    private Inventory? inventory { get; set; }
+    private InventoryViewModel? inventory { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
         if (this.inventory is null)
         {
             var inv = await ViewInventoryByIdUseCase.ExecuteAsync(this.InvId);
-            inventory = new Inventory
+            inventory = new InventoryViewModel
             {
                     InventoryId = inv.InventoryId,
                     InventoryName = inv.InventoryName,

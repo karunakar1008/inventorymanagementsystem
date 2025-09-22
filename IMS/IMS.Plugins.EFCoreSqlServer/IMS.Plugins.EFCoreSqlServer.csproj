@@ -1,10 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>8663792f-01b7-414c-b94b-08cad5e0fecb</UserSecretsId>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,8 +20,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\IMS.CoreBusiness\IMS.CoreBusiness.csproj" />
-    <ProjectReference Include="..\IMS.Plugins.EFCoreSqlServer\IMS.Plugins.EFCoreSqlServer.csproj" />
-    <ProjectReference Include="..\IMS.Plugins\IMS.Plugins.InMemory\IMS.Plugins.InMemory.csproj" />
     <ProjectReference Include="..\IMS.UseCases\IMS.UseCases.csproj" />
   </ItemGroup>
 
