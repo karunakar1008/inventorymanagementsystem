@@ -1,13 +1,19 @@
 ﻿@page "/purchase"
+@attribute [Authorize]
+
+
 @using IMS.UseCases.Activities.Interfaces
 @using IMS.UseCases.Inventories
 @using IMS.WebApp.Components.Controls.Common
 @using IMS.WebApp.ViewModels
 @using static IMS.WebApp.Components.Controls.Common.AutoCompleteComponent
+
 @inject IViewInventoriesByNameUseCase ViewInventoriesByNameUseCase
 @inject IViewInventoryByIdUseCase ViewInventoryByIdUseCase
 @inject IPurchaseInventoryUseCase PurchaseInventoryUseCase
 @inject IJSRuntime JSRuntime
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
 
 @rendermode InteractiveServer
 
@@ -50,6 +56,13 @@
     private PurchaseViewModel purchaseViewModel = new PurchaseViewModel();
     private Inventory? selectedInventory = null;
 
+    private AuthenticationState? authenticationState;
+
+    protected override async Task OnInitializedAsync()
+    {
+        authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+    }
+
     protected override void OnAfterRender(bool firstRender)
     {
         base.OnAfterRender(firstRender);
@@ -76,7 +89,12 @@
 
     private async Task Purchase()
     {
-        string userName = "Karuna";
+        string userName = string.Empty;
+
+        if (authenticationState?.User?.Identity?.IsAuthenticated ?? false)
+        {
+            userName = authenticationState.User.Identity.Name ?? string.Empty;
+        }
 
         await PurchaseInventoryUseCase.ExecuteAsync(
             this.purchaseViewModel.PONumber,

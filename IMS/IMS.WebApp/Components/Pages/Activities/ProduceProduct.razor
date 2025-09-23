@@ -1,4 +1,6 @@
 ﻿@page "/produce"
+@attribute [Authorize]
+
 @using IMS.UseCases.Activities.Interfaces
 @using IMS.WebApp.Components.Controls.Common
 @using IMS.WebApp.ViewModels
@@ -11,7 +13,7 @@
 @inject IViewProductsByNameUseCase ViewProductsByNameUseCase
 @inject IViewProductByIdUseCase ViewProductByIdUseCase
 @inject IProduceProductUseCase ProduceProductUseCase
-
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <EditForm id="produce-form" Model="produceViewModel" OnValidSubmit="Produce">
     <DataAnnotationsValidator></DataAnnotationsValidator>
@@ -46,6 +48,12 @@
 
     private Product? selectedProduct = null;
 
+    private AuthenticationState? authenticationState;
+
+    protected override async Task OnInitializedAsync()
+    {
+        authenticationState=await AuthenticationStateProvider.GetAuthenticationStateAsync();
+    }
     protected override void OnAfterRender(bool firstRender)
     {
         base.OnAfterRender(firstRender);
@@ -71,8 +79,13 @@
 
     private async Task Produce()
     {
-        string userName = "Karuna";
-        if (selectedProduct != null)
+        string userName = string.Empty;
+
+        if(authenticationState?.User?.Identity?.IsAuthenticated ?? false)
+        {
+            userName = authenticationState.User.Identity.Name ?? string.Empty;
+        }
+
         await ProduceProductUseCase.ExecuteAsync(
             this.produceViewModel.ProductionNumber,
             selectedProduct,

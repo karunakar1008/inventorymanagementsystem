@@ -1,4 +1,7 @@
 ﻿@page "/editproduct/{invId:int}"
+@attribute [Authorize]
+
+
 @rendermode InteractiveServer
 
 @inject NavigationManager NavigationManager

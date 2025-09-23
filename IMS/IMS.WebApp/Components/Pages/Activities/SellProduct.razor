@@ -1,4 +1,7 @@
 ﻿@page "/sell"
+@attribute [Authorize]
+
+
 @using IMS.UseCases.Activities.Interfaces
 @using IMS.WebApp.Components.Controls.Common
 @using IMS.WebApp.ViewModels
@@ -8,6 +11,7 @@
 @inject IViewProductsByNameUseCase ViewProductsByNameUseCase
 @inject IViewProductByIdUseCase ViewProductByIdUseCase
 @inject ISellProductUseCase SellProductUseCase
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 @rendermode InteractiveServer
 
@@ -52,6 +56,13 @@
 
     private Product? selectedProduct = null;
 
+    private AuthenticationState? authenticationState;
+
+    protected override async Task OnInitializedAsync()
+    {
+        authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+    }
+
     protected override void OnAfterRender(bool firstRender)
     {
         base.OnAfterRender(firstRender);
@@ -79,7 +90,12 @@
 
     private async Task Sell()
     {
-        string userName = "Karuna";
+        string userName = string.Empty;
+
+        if (authenticationState?.User?.Identity?.IsAuthenticated ?? false)
+        {
+            userName = authenticationState.User.Identity.Name ?? string.Empty;
+        }
 
         await SellProductUseCase.ExecuteAsync(this.sellViewModel.SalesOrderNumber, selectedProduct, sellViewModel.QuantityToSell, sellViewModel.UnitPrice, userName);
 
