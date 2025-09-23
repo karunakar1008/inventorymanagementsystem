@@ -1,4 +1,4 @@
-using BlazorIdentity.Example.Data;
+using IMS.WebApp.Data;
 using IMS.Plugins.EFCoreSqlServer;
 using IMS.Plugins.InMemory;
 using IMS.UseCases.Activities;
@@ -38,9 +38,8 @@ namespace IMS.WebApp
                 options.AddPolicy("Sales", policy => policy.RequireClaim("Department", "Sales"));
                 options.AddPolicy("Purchasers", policy => policy.RequireClaim("Department", "Purchasing"));
                 options.AddPolicy("Productions", policy => policy.RequireClaim("Department", "ProductionManagement"));
-
-
             });
+
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultScheme = IdentityConstants.ApplicationScheme;

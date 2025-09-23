@@ -1,4 +1,4 @@
-using BlazorIdentity.Example.Data;
+using IMS.WebApp.Data;
 using Microsoft.AspNetCore.Identity;
 
 namespace IMS.WebApp.Components.Account

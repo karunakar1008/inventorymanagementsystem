@@ -1,4 +1,4 @@
-using BlazorIdentity.Example.Data;
+using IMS.WebApp.Data;
 using IMS.WebApp.Components.Account.Pages;
 using IMS.WebApp.Components.Account.Pages.Manage;
 using Microsoft.AspNetCore.Authentication;

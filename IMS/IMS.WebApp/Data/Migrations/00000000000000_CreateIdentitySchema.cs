@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace BlazorIdentity.Example.Migrations
+namespace IMS.WebApp.Migrations
 {
     /// <inheritdoc />
     public partial class CreateIdentitySchema : Migration
