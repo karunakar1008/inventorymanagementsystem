@@ -1,6 +1,5 @@
 ﻿@page "/editproduct/{invId:int}"
-@attribute [Authorize]
-
+@attribute [Authorize(Policy = "Inventory")]
 
 @rendermode InteractiveServer
 

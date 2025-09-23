@@ -1,5 +1,5 @@
 ﻿@page "/addproduct"
-@attribute [Authorize]
+@attribute [Authorize(Policy = "Inventory")]
 
 
 @rendermode InteractiveServer
