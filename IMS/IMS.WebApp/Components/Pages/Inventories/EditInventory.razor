@@ -1,4 +1,6 @@
 ﻿@page "/editinventory/{invId:int}"
+@attribute [Authorize(Policy = "Inventory")]
+
 @using IMS.WebApp.ViewModels
 
 

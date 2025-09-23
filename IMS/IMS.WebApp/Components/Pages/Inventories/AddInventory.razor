@@ -1,4 +1,7 @@
 ﻿@page "/addinventory"
+@attribute [Authorize(Policy = "Inventory")]
+
+
 @using IMS.WebApp.ViewModels
 
 @inject IAddInventoryUseCase AddInventoryUseCase
